@@ -146,9 +146,8 @@
 
             $("#AddNewList").click(function () {
                 debugger;
-                var studmodl = {};
-
                 for (var i = 0; i < rowctr; i++) {
+                    var studmodl = {};
                     studmodl.Stud_Numbr = $('#Stud_Numbr' + [i]).val();
                     studmodl.FirstName = $('#FirstName' + [i]).val();
                     studmodl.LastName = $('#LastName' + [i]).val();
@@ -157,7 +156,6 @@
                     rowData1.push(studmodl);
                 }
                 //var y = JSON.stringify(rowData1);
-
                 senddata(rowData1);
             });
 
