@@ -43,8 +43,29 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult AddListitems([FromBody] List<tblStudent> rowData1)
         {
-            var h = rowData1;
-            return Json("Some message");
+            if (rowData1 != null && rowData1.Any())
+            {
+                try
+                {
+                    // Assuming YourDbContext is your Entity Framework DbContext
+                   
+                        // Add each student to the database
+                        foreach (var student in rowData1)
+                        {
+                            _context.tblStudent.Add(student);
+                        }
+                        // Save changes to the database
+                        _context.SaveChanges();
+                    return Json("Data saved successfully");
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception or handle it appropriately
+                    return BadRequest("Error saving data: " + ex.Message);
+                }
+            }
+
+            return BadRequest("No data received");
         }
 
         public IActionResult Privacy()

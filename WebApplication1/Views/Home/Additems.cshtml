@@ -7,41 +7,7 @@
 <h1>Additems</h1>
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Additems">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Stud_Numbr" class="control-label"></label>
-                <input asp-for="Stud_Numbr" class="form-control" />
-                <span asp-validation-for="Stud_Numbr" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+
 <p><hr /></p>
 
 <div>
@@ -74,7 +40,7 @@
             </tr>
         </thead>
         <tbody id="tbd12">
-            <tr>
+            <tr id="tr1">
                 <td>
                     <input type="text" class="form-control" id="Stud_Numbr0" />
                 </td>
@@ -117,7 +83,6 @@
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
-                
             }
         </tbody>
     </table>
@@ -138,22 +103,41 @@
                 a.append('<td><input type="text" class= "form-control" id = "LastName'+rowctr+'" /></td>');
                 a.append('<td><input type="text" class= "form-control" id = "Gender'+rowctr+'" /></td>');
                 a.append('<td><input type="text" class= "form-control" id = "Phone'+rowctr+'" /></td>');
-                a.append('<td><button class="form-control" id="Addmore">+</button></td>');
+                a.append('<td><button class="form-control  btn btn-danger" id="btnRemove' + rowctr + '">x</button></td>');
                 a.append('</tr>');
-                $('#tbd12').append(a);
+                //$('#tbd12').append(a);
+                $(this).closest('tr').after(a);
                 rowctr++;
+            });
+
+            $('#tbd12').on('click', '.btn.btn-danger', function () {
+                // Find the closest 'tr' element and remove it
+                $(this).closest('tr').remove();
             });
 
             $("#AddNewList").click(function () {
                 debugger;
                 for (var i = 0; i < rowctr; i++) {
                     var studmodl = {};
-                    studmodl.Stud_Numbr = $('#Stud_Numbr' + [i]).val();
-                    studmodl.FirstName = $('#FirstName' + [i]).val();
-                    studmodl.LastName = $('#LastName' + [i]).val();
-                    studmodl.Gender = $('#Gender' + [i]).val();
-                    studmodl.Phone = $('#Phone' + [i]).val();
-                    rowData1.push(studmodl);
+                    // Get values from input fields
+                    var studNumbr = $('#Stud_Numbr' + i).val();
+                    var firstName = $('#FirstName' + i).val();
+                    var lastName = $('#LastName' + i).val();
+                    var gender = $('#Gender' + i).val();
+                    var phone = $('#Phone' + i).val();
+
+                    // Check if any value is undefined
+                    if (studNumbr !== undefined && firstName !== undefined && lastName !== undefined && gender !== undefined && phone !== undefined) {
+                        // Assign values to studmodl only if they are not undefined
+                        studmodl.Stud_Numbr = studNumbr;
+                        studmodl.FirstName = firstName;
+                        studmodl.LastName = lastName;
+                        studmodl.Gender = gender;
+                        studmodl.Phone = phone;
+
+                        // Push the row data only if all values are defined
+                        rowData1.push(studmodl);
+                    }
                 }
                 //var y = JSON.stringify(rowData1);
                 senddata(rowData1);
